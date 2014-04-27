@@ -30,6 +30,7 @@ train <- cbind(train,read.table("./UCI HAR Dataset/train/y_train.txt"))
 #Read train measure values
 train <- cbind(train,read.table("./UCI HAR Dataset/train/X_train.txt"))
 
+print("Generating tidy data set...")
 #Get feature names
 fs <- f[,2]
 #Get indexes of the mean and std features
@@ -52,5 +53,6 @@ data<-(merge(data,al,by.x="Activity",by.y="V1"))
 data$Activity <- gsub("_"," ",paste(toupper(substr(data$V2, 1, 1)), tolower(substr(data$V2, 2, 100000)), sep=""))
 data <- data[,!(names(data)=='V2')]
 write.table(data,"tidy_data.txt",row.names=FALSE)
+print("Generating aggregate (with mean) data set...")
 aggs <- aggregate(. ~ Activity + Subject, data = data, mean)
 write.table(aggs,"aggregated_data.txt",row.names=FALSE)
